@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import axios from 'axios';
+import api from '../config/axios';
 
 const LearnCourse = () => {
   const { courseId } = useParams();
@@ -18,8 +18,8 @@ const LearnCourse = () => {
   const fetchCourseData = async () => {
     try {
       const [courseRes, enrollmentsRes] = await Promise.all([
-        axios.get(`/api/courses/${courseId}`),
-        axios.get('/api/enrollments/my-courses')
+        api.get(`/api/courses/${courseId}`),
+        api.get('/api/enrollments/my-courses')
       ]);
 
       const courseData = courseRes.data || {};
@@ -60,7 +60,7 @@ const LearnCourse = () => {
 
   const handleLessonComplete = async (lessonId, completed) => {
     try {
-      await axios.put(`/api/enrollments/progress/${enrollment._id}`, {
+      await api.put(`/api/enrollments/progress/${enrollment._id}`, {
         lessonId,
         completed
       });

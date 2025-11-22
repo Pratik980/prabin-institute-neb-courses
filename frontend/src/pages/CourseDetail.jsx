@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import axios from 'axios';
+import api from '../config/axios';
 import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 
@@ -19,7 +19,7 @@ const CourseDetail = () => {
 
   const fetchCourse = async () => {
     try {
-      const response = await axios.get(`/api/courses/${id}`);
+      const response = await api.get(`/api/courses/${id}`);
       const courseData = response.data || {};
       // Ensure array properties are arrays
       if (courseData.lessons && !Array.isArray(courseData.lessons)) {
@@ -124,7 +124,7 @@ const CourseDetail = () => {
 
   const submitEnrollment = async (enrollmentData) => {
     try {
-      const response = await axios.post('/api/enrollments', enrollmentData);
+      const response = await api.post('/api/enrollments', enrollmentData);
       setShowPaymentModal(false);
       alert('✅ Enrollment created successfully! Waiting for admin approval.');
       navigate('/my-courses');
