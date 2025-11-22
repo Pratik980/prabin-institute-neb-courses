@@ -63,9 +63,15 @@ NODE_ENV=production
 **How to get MongoDB Atlas URI:**
 1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 2. Create a free cluster
-3. Click "Connect" → "Connect your application"
-4. Copy the connection string
-5. Replace `<password>` with your database password
+3. **IMPORTANT: Whitelist IP for Render:**
+   - Go to **Network Access** → **Add IP Address**
+   - Click **"Allow Access from Anywhere"** (adds `0.0.0.0/0`)
+   - This is required! Render's IP must be whitelisted
+4. Click "Connect" → "Connect your application"
+5. Copy the connection string
+6. Replace `<password>` with your database password
+
+**⚠️ If you get connection errors, see `MONGODB_SETUP.md` for troubleshooting**
 
 ### Step 5: Deploy
 

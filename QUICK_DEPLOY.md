@@ -76,8 +76,12 @@ Visit your Netlify URL and test:
 2. Create free account
 3. Create cluster (free tier)
 4. Create database user
-5. Whitelist IP: `0.0.0.0/0` (allow all - for Render)
+5. **IMPORTANT: Whitelist IP for Render:**
+   - Go to **Network Access** → **Add IP Address**
+   - Click **"Allow Access from Anywhere"** (adds `0.0.0.0/0`)
+   - This is required for Render to connect!
 6. Get connection string → Use in Render `MONGODB_URI`
+7. **See `MONGODB_SETUP.md` for detailed instructions if you get connection errors**
 
 ---
 
