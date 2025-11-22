@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import ScrollReveal from '../components/ScrollReveal';
-import axios from 'axios';
+import api from '../config/axios';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -55,7 +55,7 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       if (activeTab === 'dashboard') {
-        const response = await axios.get('/api/users/dashboard');
+        const response = await api.get('/api/users/dashboard');
         const statsData = response.data || {};
         // Ensure array properties are arrays
         if (statsData.courseViews && !Array.isArray(statsData.courseViews)) {
@@ -67,15 +67,15 @@ const AdminDashboard = () => {
         setStats(statsData);
       } else if (activeTab === 'enrollments') {
         const status = enrollmentFilter === 'all' ? '' : enrollmentFilter;
-        const response = await axios.get(`/api/enrollments/all${status ? `?status=${status}` : ''}`);
+        const response = await api.get(`/api/enrollments/all${status ? `?status=${status}` : ''}`);
         const enrollmentsData = Array.isArray(response.data) ? response.data : [];
         setEnrollments(enrollmentsData);
       } else if (activeTab === 'courses') {
-        const response = await axios.get('/api/courses');
+        const response = await api.get('/api/courses');
         const coursesData = Array.isArray(response.data) ? response.data : [];
         setCourses(coursesData);
       } else if (activeTab === 'users') {
-        const response = await axios.get('/api/users/all');
+        const response = await api.get('/api/users/all');
         const usersData = Array.isArray(response.data) ? response.data : [];
         setUsers(usersData);
       }
@@ -103,7 +103,7 @@ const AdminDashboard = () => {
       }
       
       // Proceed with approval
-      await axios.put(`/api/enrollments/approve/${id}`);
+      await api.put(`/api/enrollments/approve/${id}`);
       setShowApprovalModal(false);
       setPendingApproval(null);
       fetchData();
@@ -124,7 +124,7 @@ const AdminDashboard = () => {
       return;
     }
     try {
-      await axios.put(`/api/enrollments/reject/${id}`);
+      await api.put(`/api/enrollments/reject/${id}`);
       fetchData();
     } catch (error) {
       console.error('Error rejecting enrollment:', error);
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
       return;
     }
     try {
-      await axios.delete(`/api/enrollments/${id}`);
+      await api.delete(`/api/enrollments/${id}`);
       fetchData();
       alert('Enrollment deleted successfully');
     } catch (error) {
@@ -255,9 +255,9 @@ const AdminDashboard = () => {
       };
 
       if (editingCourse) {
-        await axios.put(`/api/courses/${editingCourse._id}`, courseData);
+        await api.put(`/api/courses/${editingCourse._id}`, courseData);
       } else {
-        await axios.post('/api/courses', courseData);
+        await api.post('/api/courses', courseData);
       }
       
       setShowCourseModal(false);
@@ -308,7 +308,7 @@ const AdminDashboard = () => {
       return;
     }
     try {
-      await axios.delete(`/api/courses/${id}`);
+      await api.delete(`/api/courses/${id}`);
       fetchData();
     } catch (error) {
       console.error('Error deleting course:', error);
@@ -318,7 +318,7 @@ const AdminDashboard = () => {
 
   const handleManageLessons = async (course) => {
     try {
-      const response = await axios.get(`/api/courses/${course._id}`);
+      const response = await api.get(`/api/courses/${course._id}`);
       setSelectedCourse(response.data);
       setShowLessonModal(true);
     } catch (error) {
@@ -337,13 +337,13 @@ const AdminDashboard = () => {
       };
 
       if (editingLesson) {
-        await axios.put(`/api/courses/${selectedCourse._id}/lessons/${editingLesson._id}`, lessonData);
+        await api.put(`/api/courses/${selectedCourse._id}/lessons/${editingLesson._id}`, lessonData);
       } else {
-        await axios.post(`/api/courses/${selectedCourse._id}/lessons`, lessonData);
+        await api.post(`/api/courses/${selectedCourse._id}/lessons`, lessonData);
       }
       
       // Refresh course data
-      const response = await axios.get(`/api/courses/${selectedCourse._id}`);
+      const response = await api.get(`/api/courses/${selectedCourse._id}`);
       setSelectedCourse(response.data);
       setLessonForm({
         title: '',
@@ -375,8 +375,8 @@ const AdminDashboard = () => {
       return;
     }
     try {
-      await axios.delete(`/api/courses/${selectedCourse._id}/lessons/${lessonId}`);
-      const response = await axios.get(`/api/courses/${selectedCourse._id}`);
+      await api.delete(`/api/courses/${selectedCourse._id}/lessons/${lessonId}`);
+      const response = await api.get(`/api/courses/${selectedCourse._id}`);
       setSelectedCourse(response.data);
     } catch (error) {
       console.error('Error deleting lesson:', error);
@@ -389,7 +389,7 @@ const AdminDashboard = () => {
       return;
     }
     try {
-      await axios.delete(`/api/users/${userId}`);
+      await api.delete(`/api/users/${userId}`);
       fetchData();
     } catch (error) {
       console.error('Error deleting user:', error);
