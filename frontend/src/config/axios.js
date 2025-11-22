@@ -1,7 +1,13 @@
 import axios from 'axios';
 
 // Get API URL from environment variable or use default
-const API_URL = import.meta.env.VITE_API_URL || '';
+let API_URL = import.meta.env.VITE_API_URL || '';
+
+// Remove trailing slash and ensure no /api at the end
+API_URL = API_URL.replace(/\/+$/, ''); // Remove trailing slashes
+if (API_URL.endsWith('/api')) {
+  API_URL = API_URL.replace(/\/api$/, ''); // Remove /api if present
+}
 
 // Create axios instance with base URL
 const api = axios.create({

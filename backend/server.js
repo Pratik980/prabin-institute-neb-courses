@@ -22,8 +22,25 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Middleware
+// Handle CORS with proper origin matching (remove trailing slashes)
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+const allowedOrigin = frontendUrl.replace(/\/+$/, ''); // Remove trailing slashes
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    // Normalize origins by removing trailing slashes for comparison
+    const normalizedOrigin = origin.replace(/\/+$/, '');
+    const normalizedAllowed = allowedOrigin.replace(/\/+$/, '');
+    
+    if (normalizedOrigin === normalizedAllowed || normalizedOrigin.startsWith('http://localhost')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
