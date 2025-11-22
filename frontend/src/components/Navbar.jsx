@@ -78,11 +78,33 @@ const Navbar = () => {
             {/* Logo */}
             <Link 
               to="/" 
-              className="flex-shrink-0 flex items-center group"
+              className="flex-shrink-0 flex items-center group relative"
             >
-              <div className="relative">
-                <h1 className="text-2xl font-bold text-gray-900">
-                  <span className="text-primary-600">@</span>Prabin Institute
+              <div className="relative overflow-hidden">
+                {/* Animated gradient background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary-500 via-primary-600 to-blue-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-lg blur-xl"></div>
+                
+                {/* Main logo text with gradient */}
+                <h1 className="relative text-2xl md:text-3xl font-extrabold tracking-tight">
+                  <span className="relative inline-block">
+                    {/* Gradient text effect */}
+                    <span className="bg-gradient-to-r from-primary-600 via-blue-600 to-primary-700 bg-clip-text text-transparent animate-gradient-x">
+                      Prabin
+                    </span>
+                    <span className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 bg-clip-text text-transparent ml-2">
+                      Institute
+                    </span>
+                    
+                    {/* Animated underline */}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-600 to-blue-600 group-hover:w-full transition-all duration-500 ease-out"></span>
+                    
+                    {/* Shimmer effect */}
+                    <span className="absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer transition-opacity duration-500"></span>
+                  </span>
+                  
+                  {/* Floating particles effect */}
+                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-primary-500 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping"></span>
+                  <span className="absolute -bottom-1 -left-1 w-1.5 h-1.5 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-pulse delay-300"></span>
                 </h1>
               </div>
             </Link>
