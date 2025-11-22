@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import ScrollReveal from '../components/ScrollReveal';
-import axios from 'axios';
+import api from '../config/axios';
 
 const StudentDashboard = () => {
   const [enrollments, setEnrollments] = useState([]);
@@ -14,7 +14,7 @@ const StudentDashboard = () => {
 
   const fetchEnrollments = async () => {
     try {
-      const response = await axios.get('/api/enrollments/my-courses');
+      const response = await api.get('/api/enrollments/my-courses');
       // Filter out rejected enrollments (backend should already do this, but this is a safety check)
       const filteredEnrollments = response.data.filter(
         enrollment => enrollment.approvalStatus !== 'rejected'

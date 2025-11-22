@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import ScrollReveal from '../components/ScrollReveal';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../config/axios';
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -24,7 +24,7 @@ const Home = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get('/api/courses');
+      const response = await api.get('/api/courses');
       setCourses(response.data.slice(0, 3));
     } catch (error) {
       console.error('Error fetching courses:', error);
@@ -35,7 +35,7 @@ const Home = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get('/api/users/stats');
+      const response = await api.get('/api/users/stats');
       setStats({
         totalStudents: response.data?.totalStudents || 0,
         totalVideoLessons: response.data?.totalVideoLessons || 0,

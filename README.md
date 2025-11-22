@@ -53,7 +53,16 @@ PrabinInstittute/
 └── README.md
 ```
 
-## 🚀 Getting Started
+## 🚀 Deployment
+
+This project is configured for deployment on:
+- **Frontend**: Netlify
+- **Backend**: Render
+- **Database**: MongoDB Atlas
+
+See `DEPLOYMENT.md` for detailed deployment instructions or `QUICK_DEPLOY.md` for a quick 10-minute guide.
+
+## 🚀 Getting Started (Local Development)
 
 ### Prerequisites
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import ScrollReveal from '../components/ScrollReveal';
-import axios from 'axios';
+import api from '../config/axios';
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -24,7 +24,7 @@ const Courses = () => {
       if (filters.difficulty) params.append('difficulty', filters.difficulty);
       if (filters.search) params.append('search', filters.search);
 
-      const response = await axios.get(`/api/courses?${params}`);
+      const response = await api.get(`/api/courses?${params}`);
       setCourses(response.data);
     } catch (error) {
       console.error('Error fetching courses:', error);

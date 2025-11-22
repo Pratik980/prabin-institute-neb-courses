@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: prabin-institute-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      # Add other environment variables in Render dashboard:
+      # - MONGODB_URI
+      # - JWT_SECRET
+      # - FRONTEND_URL
+      # - ESEWA_MERCHANT_ID
+      # - ESEWA_SECRET_KEY
+
