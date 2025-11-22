@@ -22,8 +22,14 @@ const LearnCourse = () => {
         axios.get('/api/enrollments/my-courses')
       ]);
 
-      const courseData = courseRes.data;
-      const enrollmentData = enrollmentsRes.data.find(
+      const courseData = courseRes.data || {};
+      // Ensure lessons is an array
+      if (courseData.lessons && !Array.isArray(courseData.lessons)) {
+        courseData.lessons = [];
+      }
+      
+      const enrollmentsData = Array.isArray(enrollmentsRes.data) ? enrollmentsRes.data : [];
+      const enrollmentData = enrollmentsData.find(
         e => e.course._id === courseId && e.approvalStatus === 'approved'
       );
 
@@ -123,7 +129,7 @@ const LearnCourse = () => {
             <p className="text-sm text-gray-600">{course.lessons.length} lessons</p>
           </div>
           <div className="p-2">
-            {course.lessons.map((lesson, idx) => {
+            {course.lessons && Array.isArray(course.lessons) && course.lessons.map((lesson, idx) => {
               const isCompleted = enrollment.progress?.completedLessons?.includes(lesson._id.toString());
               const isCurrent = idx === currentLesson;
               

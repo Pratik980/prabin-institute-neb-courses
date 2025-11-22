@@ -15,13 +15,16 @@ const StudentDashboard = () => {
   const fetchEnrollments = async () => {
     try {
       const response = await api.get('/api/enrollments/my-courses');
+      // Ensure response.data is an array
+      const enrollmentsData = Array.isArray(response.data) ? response.data : [];
       // Filter out rejected enrollments (backend should already do this, but this is a safety check)
-      const filteredEnrollments = response.data.filter(
+      const filteredEnrollments = enrollmentsData.filter(
         enrollment => enrollment.approvalStatus !== 'rejected'
       );
       setEnrollments(filteredEnrollments);
     } catch (error) {
       console.error('Error fetching enrollments:', error);
+      setEnrollments([]);
     } finally {
       setLoading(false);
     }

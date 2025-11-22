@@ -56,20 +56,35 @@ const AdminDashboard = () => {
     try {
       if (activeTab === 'dashboard') {
         const response = await axios.get('/api/users/dashboard');
-        setStats(response.data);
+        const statsData = response.data || {};
+        // Ensure array properties are arrays
+        if (statsData.courseViews && !Array.isArray(statsData.courseViews)) {
+          statsData.courseViews = [];
+        }
+        if (statsData.monthlySales && !Array.isArray(statsData.monthlySales)) {
+          statsData.monthlySales = [];
+        }
+        setStats(statsData);
       } else if (activeTab === 'enrollments') {
         const status = enrollmentFilter === 'all' ? '' : enrollmentFilter;
         const response = await axios.get(`/api/enrollments/all${status ? `?status=${status}` : ''}`);
-        setEnrollments(response.data);
+        const enrollmentsData = Array.isArray(response.data) ? response.data : [];
+        setEnrollments(enrollmentsData);
       } else if (activeTab === 'courses') {
         const response = await axios.get('/api/courses');
-        setCourses(response.data);
+        const coursesData = Array.isArray(response.data) ? response.data : [];
+        setCourses(coursesData);
       } else if (activeTab === 'users') {
         const response = await axios.get('/api/users/all');
-        setUsers(response.data);
+        const usersData = Array.isArray(response.data) ? response.data : [];
+        setUsers(usersData);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+      // Set empty arrays on error
+      if (activeTab === 'enrollments') setEnrollments([]);
+      if (activeTab === 'courses') setCourses([]);
+      if (activeTab === 'users') setUsers([]);
     } finally {
       setLoading(false);
     }
@@ -561,7 +576,7 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Top Courses by Views */}
-                {stats.courseViews && stats.courseViews.length > 0 && (
+                {stats.courseViews && Array.isArray(stats.courseViews) && stats.courseViews.length > 0 && (
                   <ScrollReveal delay={600}>
                     <div className="card-hover bg-white rounded-xl shadow-lg p-6 border-2 border-gray-100">
                       <h3 className="text-xl font-bold text-gray-900 mb-4">🔥 Top Courses by Views</h3>
@@ -901,7 +916,7 @@ const AdminDashboard = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     <div className="card-hover bg-white rounded-xl shadow-lg p-6 border-2 border-gray-100">
                       <h3 className="text-xl font-bold text-gray-900 mb-4">Monthly Revenue</h3>
-                      {stats.monthlySales && stats.monthlySales.length > 0 ? (
+                      {stats.monthlySales && Array.isArray(stats.monthlySales) && stats.monthlySales.length > 0 ? (
                         <div className="space-y-3">
                           {stats.monthlySales.map((month, idx) => (
                             <div key={idx} className="flex items-center justify-between">

@@ -20,7 +20,15 @@ const CourseDetail = () => {
   const fetchCourse = async () => {
     try {
       const response = await axios.get(`/api/courses/${id}`);
-      setCourse(response.data);
+      const courseData = response.data || {};
+      // Ensure array properties are arrays
+      if (courseData.lessons && !Array.isArray(courseData.lessons)) {
+        courseData.lessons = [];
+      }
+      if (courseData.learningOutcomes && !Array.isArray(courseData.learningOutcomes)) {
+        courseData.learningOutcomes = [];
+      }
+      setCourse(courseData);
     } catch (error) {
       console.error('Error fetching course:', error);
     } finally {
@@ -180,7 +188,7 @@ const CourseDetail = () => {
               <div className="mb-6">
                 <h3 className="font-semibold mb-2">What you'll learn:</h3>
                 <ul className="list-disc list-inside space-y-1">
-                  {course.learningOutcomes?.map((outcome, idx) => (
+                  {course.learningOutcomes && Array.isArray(course.learningOutcomes) && course.learningOutcomes.map((outcome, idx) => (
                     <li key={idx} className="text-gray-600">{outcome}</li>
                   ))}
                 </ul>
@@ -204,7 +212,7 @@ const CourseDetail = () => {
         <div className="mt-8 bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold mb-4">Course Content</h2>
           <div className="space-y-2">
-            {course.lessons?.map((lesson, idx) => (
+            {course.lessons && Array.isArray(course.lessons) && course.lessons.map((lesson, idx) => (
               <div key={lesson._id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center space-x-4">
                   <span className="text-primary-600 font-semibold">{idx + 1}</span>

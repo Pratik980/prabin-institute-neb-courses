@@ -25,9 +25,11 @@ const Courses = () => {
       if (filters.search) params.append('search', filters.search);
 
       const response = await api.get(`/api/courses?${params}`);
-      setCourses(response.data);
+      const coursesData = Array.isArray(response.data) ? response.data : [];
+      setCourses(coursesData);
     } catch (error) {
       console.error('Error fetching courses:', error);
+      setCourses([]);
     } finally {
       setLoading(false);
     }
