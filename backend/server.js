@@ -45,9 +45,45 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/ai', aiRoutes);
 
+// Root Route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Prabin Institute API',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      courses: '/api/courses',
+      enrollments: '/api/enrollments',
+      payments: '/api/payments',
+      users: '/api/users',
+      ai: '/api/ai'
+    }
+  });
+});
+
 // Health Check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Prabin Institute API is running' });
+});
+
+// 404 Handler for undefined routes
+app.use((req, res) => {
+  res.status(404).json({ 
+    error: 'Route not found',
+    message: `Cannot ${req.method} ${req.path}`,
+    availableEndpoints: {
+      root: '/',
+      health: '/api/health',
+      auth: '/api/auth',
+      courses: '/api/courses',
+      enrollments: '/api/enrollments',
+      payments: '/api/payments',
+      users: '/api/users',
+      ai: '/api/ai'
+    }
+  });
 });
 
 // Error Handling Middleware
